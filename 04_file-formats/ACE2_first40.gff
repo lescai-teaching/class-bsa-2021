@@ -1,5 +1,4 @@
 ##gff-version 3
-# Generated Thu Feb 25 10:25:56 2021 via https://github.com/abrahamdsl/vcf_to_gff3
 X	.	SNP	15494580	15494580	.	+	.	ID=loc_Svariants1;Name=loc_Svariants1;Note=C>A,
 X	.	SNP	15494580	15494580	.	+	.	ID=loc_Svariants1;Name=loc_Svariants1;Note=C>T,
 X	.	SNP	15494588	15494588	.	+	.	ID=loc_Svariants2;Name=loc_Svariants2;Note=C>T,
