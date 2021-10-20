@@ -8,7 +8,7 @@
 ##ALT=<ID=CNV,Description="Copy number variable region">
 #CHROM	POS	ID	REF	ALT	QUAL	FILTER	INFO	FORMAT	NA00001
 chr19	111	.	A	C	9.6	PASS	.	GT	0|0
-chr19	112	.	A	G	10	PASS	.	GT	0|0:
+chr19	112	.	A	G	10	PASS	.	GT	0|0
 chr20	14370	.	G	A	29	PASS	.	GT	0|0
 chr20	17330	.	T	A	3	q10	.	GT	0|0
 chr20	1110696	.	A	G,T	67	PASS	.	GT	1|2
