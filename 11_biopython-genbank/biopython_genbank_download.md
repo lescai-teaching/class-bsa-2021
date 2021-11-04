@@ -1,6 +1,12 @@
+# Biopython
 
+## Introduction
 
+The goal of Biopython is to make it as easy as possible to use Python for bioinformatics by creating high-quality, reusable modules and classes. Biopython features include parsers for various Bioinformatics file formats (BLAST, Clustalw, FASTA, Genbank), access to online services (NCBI, Expasy)
 
+For more information see the [cookbook](http://biopython.org/DIST/docs/tutorial/Tutorial.html)
+
+The first thing we need to do is importing the libraries into our environment:
 
 ```
 import Bio
@@ -11,23 +17,42 @@ print(Bio.__version__)
 Entrez.email = "A.N.Other@example.com"
 ```
 
+## Simple Downloads
+
+We can now use *Entrez* methods, to download GenBank records based on their identifier.
+
+We use the method *efetch* and we need to specify a few parameters:
+
+- the database we want to search into (db)
+- the type of results we would like (rettype)
+- the format of the download (retmode)
+- the accession number of the record (id)
+
+The code appears as follows:
 
 ```
 result = Entrez.efetch(
     db="nucleotide", rettype="fasta", retmode="text", id="MW586689"
 )
 ```
+Once we have the result, we can *parse* (or *read*) our record: *parsing* means transforming this information into something usable.
 
+Sometimes parsing means converting a format into a readable one. In other cases, like the following, it means *extracting* some information from a more complex structure.
 
 ```
 seq_record = SeqIO.read(result, "fasta")
 ```
 
+We can print some of the information we have *parsed* with the following code:
+
 ```
 print("sequence identifier %s with fasta sequence of length %i" % (seq_record.id, len(seq_record.seq)))
 print("A taste of sequence is %s" % repr(seq_record.seq))
 ```
+Follow your teacher, for a more complete explanation of the code above.
 
+
+## GenBank records
 
 
 
