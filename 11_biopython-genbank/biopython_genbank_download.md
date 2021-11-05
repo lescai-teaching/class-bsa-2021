@@ -54,29 +54,75 @@ Follow your teacher, for a more complete explanation of the code above.
 
 ## GenBank records
 
+### Inspecting a single record
 
+In previous examples we have extracted the records in *fasta* format.
+Now we're going to extract them in *GenBank* format, i.e. containing all the features you have seen already on the website.
+
+For this we choose:
+
+- download from the *nucleotide* database
+- record type (rettype) equals *gb* (i.e. GenBank)
+- we select a text download (retmode)
 
 ```
-gbresult = Entrez.efetch(db="nucleotide", rettype="gb", retmode="test", id="MW586689")
+gbresult = Entrez.efetch(db="nucleotide", rettype="gb", retmode="text", id="MW586689")
 gb_record = SeqIO.read(gbresult, "genbank")
+```
+
+Now that we have fetched the record, and parsed the data, we can inspect the structure of the record we have downloaded, by printing the features:
+
+```
 print(str(gb_record.features))
 ```
+Now, this is a bit difficult to read.
 
+So let's have a look at the first one:
+
+```
+print(str(gb_record.features[0]))
+```
+
+We understand a little better the structure now. This feature has three objects, i.e. identified by the names printed without indentation:
+
+- type
+- location
+- qualifiers
+
+Then, the object qualifier is a dictionary: I can understand this because of the *key* - *value* pair structure.
+
+Therefore, if I wanted to grab the host organism I'd print:
+
+```
+print(str(gb_record.features[0].qualifiers["host"]))
+```
+
+### Fetching multiple records
+
+If we pass a list to the *id* parameters, this will fetch records corresponding to each of the accession numbers we have passed.
+
+In order to simplify the inspection of the data, we're fetching some proteins from the protein database instead of nucleotined.
 
 ```
 protein_list = Entrez.efetch(db="protein", rettype="fasta", retmode="text", id="QRK24690,QRO03507,QRU93410,QRI43434,QRX39425,QRD95445,QRC42505,QRF69711")
 ```
 
+When we have multiple records to parse, we don't use the method *read* but we need to use the method *parse*, which loops through each of them:
 
 ```
 records = SeqIO.parse(protein_list, "fasta")
 ```
+
+Now our *records* is an iterable object, which we can loop through in a for loop:
 
 ```
 for protein in records:
   print("%s" % protein.id)
   print("%s" % protein.seq)
 ```
+
+If we wanted to download the fasta sequence of all these records, we'd simply write the following code.
+Follow your teacher for a detailed explanation:
 
 ```
 protein_list = Entrez.efetch(db="protein", rettype="fasta", retmode="text", id="QRK24690,QRO03507,QRU93410,QRI43434,QRX39425,QRD95445,QRC42505,QRF69711")
@@ -87,8 +133,16 @@ for record in records:
   print(">%s\n%s\n" % (record.id, repr(record.seq)))
 ```
 
+In the example above, we have downloaded protein sequences.
 
+Let's inspect again a GenBank record though, at [this link](https://www.ncbi.nlm.nih.gov/nuccore/MW662150)
 
+Actually, the translation of the spike protein is already present in the whole genome record.
+
+We just need to find a way to extract it.
+
+Let's write a function for it.
+Follow your teacher for a detailed explanation of the choices in the code:
 
 ```
 def get_spike_from_gb(record):
@@ -101,12 +155,16 @@ def get_spike_from_gb(record):
             return results
 ```
 
+Now we just have to apply it.
+
+First we get some genome records.
 
 ```
 gbresultList = Entrez.efetch(db="nucleotide", rettype="gb", retmode="test", id="MW662150,MW662159,MW642248,MW621433,MW580576")
 recordsList = SeqIO.parse(gbresultList, "genbank")
 ```
 
+Then we loop through them, we extract the S protein and we write them in a file.
 
 ```
 for record in recordsList:
