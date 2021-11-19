@@ -1,15 +1,28 @@
-# Variant Calling workflow - Alignments
+# Resequencing workflow - Alignments
 
+This is the first of 3 parts dedicated to resequencing, i.e. determining the sequence variation of individuals on a reference-based workflow.
 
 ## Before you start
 
+If you haven't done that already, you should first download the dataset required by cloning the appropriate git repository, as below:
+
 ```{bash}
+cd /config/workspace
 git clone https://github.com/lescai-teaching/datasets_class.git
+```
+
+Should this encounter problems (the dataset is minimal but several files need to be downloaded), you can download the packaged repository as follows:
+
+```{bash}
+cd /config/workspace
+wget https://github.com/lescai-teaching/datasets_class/archive/refs/tags/1.0.0.tar.gz
+tar -xvzf 1.0.0.tar.gz
 ```
 
 
 ## Prepare your folders
 
+We are going to create a structured folder where to perform the variant calling:
 
 ```{bash}
 mkdir -p variant_calling
@@ -18,12 +31,14 @@ mkdir -p raw_data
 cd raw_data
 ```
 
+Then, we are *not* copying the data folder: instead, we are creating symbolic links:
 
 
 ```{bash}
 ln -s /config/workspace/datasets_class/germline_calling/reads/*.gz .
 ```
 
+We can then prepare another subfolder where to save the results of this exercise:
 
 ```{bash}
 cd ..
@@ -34,6 +49,9 @@ cd alignment
 
 ## Align the reads to the reference
 
+We use **bwa** in order to align the reads to a subset of the Human genome, limited to chromosome 21.
+
+We do that separately for each of the samples: first the normal sample
 
 ```{bash}
 bwa mem \
@@ -45,6 +63,7 @@ bwa mem \
 | samtools view -@ 8 -bhS -o normal.bam -
 ```
 
+Then our simulated disease case sample:
 
 
 ```{bash}
@@ -57,14 +76,18 @@ bwa mem \
 | samtools view -@ 8 -bhS -o disease.bam -
 ```
 
+At the end of both computation, we will have a **bam** file.
 
 ## Sort and index BAM files
+
+The alignments need first to be sorted (this also saves space on disk)
 
 ```{bash}
 samtools sort -o normal_sorted.bam normal.bam
 samtools sort -o disease_sorted.bam disease.bam
 ```
 
+and *indexed*: the index is very important, as it allows accessing to slices of the data by genomics coordinates.
 
 ```{bash}
 samtools index normal_sorted.bam
@@ -73,6 +96,8 @@ samtools index disease_sorted.bam
 
 
 ## Mark duplicates
+
+You might refer to the class slides, to better understand what does *marking duplicates* mean: we perform this with GATK separately on each sample. First the one we called *normal*, then the one we called *disease*:
 
 ```{bash}
 gatk MarkDuplicates \
@@ -89,9 +114,11 @@ gatk MarkDuplicates \
 
 ## Base Quality Score Recalibration
 
+Refer to the class slides for the meaning of *base recalibration*. Here we perform it in 2 steps.
 
 ### Calculate recalibration
 
+First we calculate the shift in quality scores, and create a recalibration table:
 
 ```{bash}
 gatk BaseRecalibrator \
@@ -110,6 +137,9 @@ gatk BaseRecalibrator \
 ```
 
 ### Apply recalibration to alignments
+
+Then, we use the recalibration table to modify the quality scores in the BAM files, and write new recalibrated files:
+
 
 ```{bash}
 gatk ApplyBQSR \
