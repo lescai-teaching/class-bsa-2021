@@ -29,7 +29,38 @@ We can start searching for the following criteria:
 - variants with a described phenotype, if any
 - status of *LoF* 
 
+In order to check those high impact:
 
+```
+grep HIGH results_ann.vcf
+```
+
+We can count how many:
+
+
+```
+grep HIGH results_ann.vcf | wc -l
+```
+
+Even if it's not many, we can start by eliminating those with an incompatible genotype in the control sample:
+
+```
+grep HIGH results_ann.vcf | cut -f 1,2,10,11
+```
+
+we can save the variants we consider interesting in a file, and then use the file for a grep
+
+```
+grep -f selected_vars.txt results_ann.vcf 
+```
+
+if we limit to those confirmed to be a LoF
+
+```
+grep -f selected_vars.txt results_ann.vcf | grep LOF | wc -l
+```
+
+we get 9 variants to inspect in other databases.
 ### Looking into other databases
 
 Depending on our search into the VCF file, we can then search for the position(s) we found, or their *variant identifier* if available (rs number or cosmic ID) in the following databases:
