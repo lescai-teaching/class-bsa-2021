@@ -5,8 +5,7 @@
 ## PREPARE YOUR DATA     ########################
 #################################################
 
-
-setwd("~/chipseq_exercise")
+setwd("/home/rstudio/data/chipseq_exercise/alignments/macs2")
 
 
 library(ChIPpeakAnno)

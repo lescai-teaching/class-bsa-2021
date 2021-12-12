@@ -85,22 +85,28 @@ gatk MarkDuplicates \
 
 ####### THIS PART IS EXECUTED ON CONTAINER RSTUDIO #######
 
+cd /home/rstudio/data/chipseq_exercise/alignments
+
 
 #################################################
 ## CALL PEAKS CASE1 vs CONTROL ##################
 #################################################
+
+mkdir -p macs2_case1
 
 macs2 callpeak -t chip_case_md.bam \
 -c chip_control_md.bam \
 -f BAM \
 -n class_chip \
 --nomodel --extsize 150 \
---outdir macs2 2> macs2/class_chip.log
+--outdir macs2_case1 2> macs2_case1/class_chip.log
 
 
 #################################################
 ## CALL PEAKS CASE2 vs CONTROL ##################
 #################################################
+
+mkdir -p macs2_case2
 
 macs2 callpeak -t chip_case2_md.bam \
 -c chip_control_md.bam \
