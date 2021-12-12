@@ -5,14 +5,14 @@
 ## PREPARE YOUR DATA     ########################
 #################################################
 
-setwd("/home/rstudio/data/chipseq_exercise/alignments/macs2")
+setwd("/home/rstudio/data/chipseq_exercise")
 
 
 library(ChIPpeakAnno)
 
 
-case1 <- toGRanges("~/datasets_class/chipseq/peaks/class_chip_peaks.narrowPeak", format="narrowPeak", header = FALSE)
-case2 <- toGRanges("~/datasets_class/chipseq/peaks/class_chip2_peaks.narrowPeak", format="narrowPeak", header = FALSE)
+case1 <- toGRanges("/home/rstudio/data/chipseq_exercise/alignments/macs2_case1/class_chip_peaks.narrowPeak", format="narrowPeak", header = FALSE)
+case2 <- toGRanges("/home/rstudio/data/chipseq_exercise/alignments/macs2_case2/class_chip2_peaks.narrowPeak", format="narrowPeak", header = FALSE)
 
 
 
@@ -32,7 +32,7 @@ makeVennDiagram(overlaps, fill=c("#009E73", "#F0E442"), # circle fill color
 
 library(EnsDb.Hsapiens.v86) ##(hg38)
 ## create annotation file from EnsDb or TxDb
-annoData <- readRDS("/home/rstudio/datasets_class/chipseq/peaks/annoData.RData")
+annoData <- readRDS("/home/rstudio/data/datasets_class/chipseq/peaks/annoData.RData")
 
 overlappingPeaks <- overlaps$peaklist[["case1///case2"]]
 
