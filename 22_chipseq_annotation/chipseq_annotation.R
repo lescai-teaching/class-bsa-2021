@@ -82,7 +82,7 @@ overlappingPeaks <- annotatePeakInBatch(overlappingPeaks,
 library(org.Hs.eg.db)
 overlappingPeaks.anno <- addGeneIDs(overlappingPeaks,
                                     "org.Hs.eg.db",
-                                    IDs2Add = c("symbol"))
+                                    IDs2Add = c("entrez_id"))
 head(overlappingPeaks.anno)
 write.csv(as.data.frame(unname(overlappingPeaks.anno)), "peakes_annotation.csv")
 
