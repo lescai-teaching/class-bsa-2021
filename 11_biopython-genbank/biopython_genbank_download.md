@@ -101,7 +101,7 @@ print(str(gb_record.features[0].qualifiers["host"]))
 
 If we pass a list to the *id* parameters, this will fetch records corresponding to each of the accession numbers we have passed.
 
-In order to simplify the inspection of the data, we're fetching some proteins from the protein database instead of nucleotined.
+In order to simplify the inspection of the data, we're fetching some proteins from the protein database instead of nucleotide.
 
 ```
 protein_list = Entrez.efetch(db="protein", rettype="fasta", retmode="text", id="QRK24690,QRO03507,QRU93410,QRI43434,QRX39425,QRD95445,QRC42505,QRF69711")
